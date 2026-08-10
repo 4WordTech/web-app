@@ -1,62 +1,87 @@
 # 4wordtech
 
-Startup IT services website for **4wordtech** — Next.js, TypeScript, Tailwind CSS v4.
+Frontend marketing website for **4wordtech**, a startup that provides IT services to clients — websites, web and mobile apps, cloud, AI, integrations, and ongoing support.
 
-Positioning: **4wordtech is a startup that provides IT services to clients** — websites, apps, cloud, AI, and support.
+This repo is the public site only (Next.js App Router). There is no database and no auth. Contact and newsletter forms are placeholders until you connect a backend or third-party tool.
 
-## Run locally
+## Frontend stack
+
+| Layer | Choice |
+| --- | --- |
+| Framework | [Next.js](https://nextjs.org/) 16 (App Router) |
+| Language | TypeScript |
+| UI | React 19 + [Tailwind CSS](https://tailwindcss.com/) v4 |
+| Animation | [Motion](https://motion.dev/) (`motion/react`) |
+| Fonts | Geist, Syne, Instrument Serif via `next/font` |
+
+Brand copy, services, example projects, pricing, and FAQs live in [`src/lib/content.ts`](src/lib/content.ts) so you can edit text without hunting through components.
+
+## Prerequisites
+
+- [Node.js](https://nodejs.org/) 20 or later
+- npm (comes with Node)
+
+## How to run
 
 ```bash
+git clone https://github.com/4WordTech/web-app.git
+cd web-app
 npm install
 npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000).
+Open [http://localhost:3000](http://localhost:3000). The app hot-reloads when you change files.
 
-```bash
-npm run build   # production build
-npm run start   # serve the build
+### Scripts
+
+| Command | What it does |
+| --- | --- |
+| `npm run dev` | Local dev server (Turbopack) |
+| `npm run build` | Production build |
+| `npm run start` | Serve the production build |
+| `npm run lint` | ESLint |
+
+## Project layout
+
+```
+src/
+  app/              # Routes (pages), layout, SEO, contact API stub
+  components/       # Header, footer, hero, shared UI
+  lib/
+    content.ts      # All site copy — edit here first
+    utils.ts        # Small helpers
+public/             # Static assets (logo)
 ```
 
-## What’s on the site
+The 4wordtech mark is inlined in [`src/components/Logo.tsx`](src/components/Logo.tsx) (uses `currentColor`). A copy also sits at [`4wordtech.svg`](4wordtech.svg) / [`public/logo.svg`](public/logo.svg).
 
-Follows the sales-funnel structure from the design guide:
+## Pages
 
-| Page | Purpose |
+| Route | Purpose |
 | --- | --- |
-| `/` | Hero, services preview, why us, example work, process, about, who we help, CTAs |
-| `/services` | Full offerings: problem → solution → benefits → outcomes |
-| `/work` + `/work/[slug]` | Example client engagements |
+| `/` | Homepage: hero, services, why us, example work, process, about, who we help, CTAs |
+| `/services` | Full IT offerings (problem → solution → benefits → outcomes) |
+| `/work` · `/work/[slug]` | Example client engagements |
 | `/about` | Story, mission, mindset, skills |
-| `/contact` | Form, email, WhatsApp + calendar placeholders |
-| `/process` | Detailed workflow + communication style |
-| `/pricing` | Starter / Growth / Scale |
-| `/blog` + `/blog/[slug]` | Insights (SEO / authority) |
-| `/careers` | Open roles |
+| `/contact` | Form + email / WhatsApp / calendar placeholders |
+| `/process` | Discovery → build → launch → support |
+| `/pricing` | Starter / Growth / Scale (starting-from prices) |
+| `/blog` · `/blog/[slug]` | Insights (placeholder posts) |
+| `/careers` | Open roles (placeholder) |
 | `/faq` | Common questions |
-| `/privacy` `/terms` | Legal stubs |
+| `/privacy` · `/terms` | Legal stubs |
 
-Yellow **Placeholder** pills mark copy, metrics, logos, socials, and legal text you should replace.
+Yellow **Placeholder** pills on the site mark copy you should replace before going live (contact details, socials, example work, legal, rates).
 
-## Edit content
+## What is not wired yet
 
-Almost all copy lives in one file:
+This is frontend-first. Safe to ship as a static-looking site, but these still need a real integration:
 
-- [`src/lib/content.ts`](src/lib/content.ts) — name, contact, services, projects, pricing, posts, FAQs, etc.
+- **Contact form** — `POST /api/contact` only logs the payload. Connect Resend, Formspree, or a CRM in [`src/app/api/contact/route.ts`](src/app/api/contact/route.ts).
+- **Newsletter** — saves the email in `localStorage` only.
+- **Calendar / WhatsApp / socials / phone / email** — dummy values in `site` inside [`src/lib/content.ts`](src/lib/content.ts).
+- **Domain** — `metadataBase` in [`src/app/layout.tsx`](src/app/layout.tsx) is set to `https://4wordtech.com`. Change it to your real domain before SEO / Open Graph matter.
 
-Logo: [`4wordtech.svg`](4wordtech.svg) is inlined via [`src/components/Logo.tsx`](src/components/Logo.tsx) (uses `currentColor` so it works on the dark UI).
+## License
 
-## Wire up later
-
-- Contact form → [`src/app/api/contact/route.ts`](src/app/api/contact/route.ts) (logs only today)
-- Newsletter → localStorage only; connect Resend / Loops / Buttondown
-- Calendar → drop a Calendly iframe on `/contact`
-- `metadataBase` in [`src/app/layout.tsx`](src/app/layout.tsx) — change to your real domain
-- Social / WhatsApp / phone / email in `site` inside `content.ts`
-
-## Stack
-
-- Next.js 16 (App Router) + React 19
-- TypeScript
-- Tailwind CSS v4
-- Motion (`motion/react`) for scroll + hover animation
+Private project for 4wordtech. Update this section if you publish it under a specific license.
