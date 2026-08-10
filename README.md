@@ -53,7 +53,7 @@ src/
 public/             # Static assets (logo)
 ```
 
-The 4wordtech mark is inlined in [`src/components/Logo.tsx`](src/components/Logo.tsx) (uses `currentColor`). A copy also sits at [`4wordtech.svg`](4wordtech.svg) / [`public/logo.svg`](public/logo.svg).
+The 4wordtech mark is inlined in [`src/components/Logo.tsx`](src/components/Logo.tsx) (uses `currentColor`). A static copy also sits at [`public/logo.svg`](public/logo.svg).
 
 ## Pages
 
