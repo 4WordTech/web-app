@@ -1,0 +1,1657 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>4wordtech — Design System</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400;500&family=Geist:wght@400;500;600&family=Instrument+Serif:ital@0;1&family=Syne:wght@500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --bg: #050505;
+        --surface: #0e0e0e;
+        --elevated: #161616;
+        --ink: #f4f1ea;
+        --muted: #8a867e;
+        --line: #242420;
+        --accent: #c8f542;
+        --accent-ink: #12140a;
+        --accent-hover: #d6ff62;
+        --warm: #e4c9a5;
+
+        --font-sans: "Geist", ui-sans-serif, system-ui, sans-serif;
+        --font-display: "Syne", "Geist", sans-serif;
+        --font-serif: "Instrument Serif", ui-serif, Georgia, serif;
+        --font-mono: "Geist Mono", ui-monospace, monospace;
+
+        --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+        --max: 1400px;
+        --header-h: 72px;
+        --radius-pill: 9999px;
+        --radius-card: 24px;
+        --radius-panel: 28px;
+        --radius-input: 16px;
+      }
+
+      * {
+        box-sizing: border-box;
+        border-color: var(--line);
+      }
+
+      html {
+        scroll-behavior: smooth;
+        background: var(--bg);
+      }
+
+      body {
+        margin: 0;
+        min-height: 100%;
+        background: var(--bg);
+        color: var(--ink);
+        font-family: var(--font-sans);
+        font-size: 16px;
+        line-height: 1.5;
+        -webkit-font-smoothing: antialiased;
+      }
+
+      ::selection {
+        background: var(--accent);
+        color: var(--accent-ink);
+      }
+
+      a {
+        color: inherit;
+        text-decoration-thickness: 1px;
+        text-underline-offset: 4px;
+      }
+
+      /* Atmosphere */
+      .grain {
+        pointer-events: none;
+        position: fixed;
+        inset: 0;
+        z-index: 80;
+        opacity: 0.18;
+        mix-blend-mode: overlay;
+        background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+      }
+
+      .bg-grid {
+        background-image:
+          linear-gradient(rgba(244, 241, 234, 0.035) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(244, 241, 234, 0.035) 1px, transparent 1px);
+        background-size: 80px 80px;
+      }
+
+      .bg-radial-fade {
+        background:
+          radial-gradient(circle at 20% 10%, rgba(200, 245, 66, 0.08), transparent 42%),
+          radial-gradient(circle at 85% 20%, rgba(228, 201, 165, 0.07), transparent 40%),
+          radial-gradient(circle at 50% 90%, rgba(200, 245, 66, 0.04), transparent 50%);
+      }
+
+      .text-outline {
+        -webkit-text-stroke: 1px rgba(244, 241, 234, 0.35);
+        color: transparent;
+      }
+
+      /* Layout shell */
+      .shell {
+        position: relative;
+        z-index: 1;
+        max-width: var(--max);
+        margin: 0 auto;
+        padding: 0 20px 120px;
+      }
+
+      @media (min-width: 768px) {
+        .shell {
+          padding-left: 32px;
+          padding-right: 32px;
+        }
+      }
+
+      /* Sticky toc */
+      .topbar {
+        position: sticky;
+        top: 0;
+        z-index: 50;
+        backdrop-filter: blur(24px);
+        background: rgba(5, 5, 5, 0.8);
+        border-bottom: 1px solid var(--line);
+      }
+
+      .topbar-inner {
+        max-width: var(--max);
+        margin: 0 auto;
+        padding: 0 20px;
+        height: var(--header-h);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 24px;
+      }
+
+      @media (min-width: 768px) {
+        .topbar-inner {
+          padding: 0 32px;
+        }
+      }
+
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        text-decoration: none;
+      }
+
+      .brand-mark {
+        width: 28px;
+        height: 28px;
+        border-radius: 8px;
+        background: var(--accent);
+        color: var(--accent-ink);
+        display: grid;
+        place-items: center;
+        font-family: var(--font-display);
+        font-weight: 700;
+        font-size: 14px;
+      }
+
+      .brand-name {
+        font-family: var(--font-display);
+        font-weight: 600;
+        letter-spacing: -0.02em;
+      }
+
+      .toc {
+        display: none;
+        gap: 20px;
+        overflow-x: auto;
+      }
+
+      @media (min-width: 900px) {
+        .toc {
+          display: flex;
+        }
+      }
+
+      .toc a {
+        font-family: var(--font-mono);
+        font-size: 11px;
+        text-transform: uppercase;
+        letter-spacing: 0.16em;
+        color: var(--muted);
+        text-decoration: none;
+        white-space: nowrap;
+        transition: color 0.3s;
+      }
+
+      .toc a:hover {
+        color: var(--ink);
+      }
+
+      /* Hero */
+      .hero {
+        position: relative;
+        isolation: isolate;
+        overflow: hidden;
+        padding: 96px 0 72px;
+      }
+
+      .hero-grid {
+        pointer-events: none;
+        position: absolute;
+        inset: 0;
+        opacity: 0.7;
+      }
+
+      .eyebrow {
+        margin: 0 0 12px;
+        font-family: var(--font-mono);
+        font-size: 11px;
+        text-transform: uppercase;
+        letter-spacing: 0.22em;
+        color: var(--accent);
+      }
+
+      .eyebrow.muted {
+        color: var(--muted);
+        letter-spacing: 0.2em;
+      }
+
+      h1.hero-title {
+        margin: 20px 0 0;
+        font-family: var(--font-display);
+        font-weight: 600;
+        font-size: clamp(2.6rem, 8vw, 5.5rem);
+        line-height: 0.95;
+        letter-spacing: -0.04em;
+      }
+
+      h1.hero-title em {
+        font-family: var(--font-serif);
+        font-weight: 400;
+        font-style: italic;
+        color: var(--accent);
+      }
+
+      .lede {
+        margin: 28px 0 0;
+        max-width: 36rem;
+        color: var(--muted);
+        font-size: 1.125rem;
+        line-height: 1.7;
+      }
+
+      .meta-row {
+        margin-top: 48px;
+        padding-top: 24px;
+        border-top: 1px solid var(--line);
+        display: flex;
+        flex-wrap: wrap;
+        gap: 16px 32px;
+        justify-content: space-between;
+        font-family: var(--font-mono);
+        font-size: 11px;
+        text-transform: uppercase;
+        letter-spacing: 0.18em;
+        color: var(--muted);
+      }
+
+      /* Sections */
+      section.doc {
+        padding: 80px 0 0;
+        scroll-margin-top: 96px;
+      }
+
+      .section-head {
+        margin-bottom: 40px;
+        max-width: 48rem;
+      }
+
+      .section-head h2 {
+        margin: 0;
+        font-family: var(--font-display);
+        font-size: clamp(1.875rem, 4vw, 3rem);
+        font-weight: 600;
+        letter-spacing: -0.02em;
+        line-height: 1.1;
+      }
+
+      .section-head p {
+        margin: 16px 0 0;
+        color: var(--muted);
+        font-size: 1.05rem;
+        line-height: 1.65;
+        max-width: 36rem;
+      }
+
+      /* Cards / panels */
+      .panel {
+        border: 1px solid var(--line);
+        border-radius: var(--radius-panel);
+        background: var(--surface);
+        padding: 28px;
+      }
+
+      @media (min-width: 768px) {
+        .panel {
+          padding: 32px;
+        }
+      }
+
+      .panel.elevated {
+        background: var(--elevated);
+      }
+
+      .panel.flat {
+        background: transparent;
+      }
+
+      .grid-2 {
+        display: grid;
+        gap: 16px;
+      }
+
+      .grid-3 {
+        display: grid;
+        gap: 16px;
+      }
+
+      .grid-4 {
+        display: grid;
+        gap: 16px;
+      }
+
+      @media (min-width: 640px) {
+        .grid-2 {
+          grid-template-columns: repeat(2, 1fr);
+        }
+        .grid-4 {
+          grid-template-columns: repeat(2, 1fr);
+        }
+      }
+
+      @media (min-width: 900px) {
+        .grid-3 {
+          grid-template-columns: repeat(3, 1fr);
+        }
+        .grid-4 {
+          grid-template-columns: repeat(4, 1fr);
+        }
+      }
+
+      /* Color swatches */
+      .swatch {
+        overflow: hidden;
+        border: 1px solid var(--line);
+        border-radius: var(--radius-card);
+        background: var(--surface);
+      }
+
+      .swatch-chip {
+        height: 112px;
+      }
+
+      .swatch-meta {
+        padding: 16px 18px 18px;
+      }
+
+      .swatch-meta strong {
+        display: block;
+        font-family: var(--font-display);
+        font-size: 1.05rem;
+        font-weight: 600;
+        letter-spacing: -0.02em;
+      }
+
+      .swatch-meta code,
+      .token {
+        font-family: var(--font-mono);
+        font-size: 11px;
+        color: var(--muted);
+        letter-spacing: 0.02em;
+      }
+
+      .swatch-meta .hex {
+        margin-top: 6px;
+        font-family: var(--font-mono);
+        font-size: 12px;
+        color: var(--ink);
+      }
+
+      .usage-list {
+        margin: 20px 0 0;
+        padding: 0;
+        list-style: none;
+        display: grid;
+        gap: 10px;
+      }
+
+      .usage-list li {
+        display: flex;
+        gap: 12px;
+        align-items: flex-start;
+        font-size: 0.9rem;
+        color: var(--muted);
+        line-height: 1.5;
+      }
+
+      .usage-list li::before {
+        content: "✦";
+        color: var(--accent);
+        flex-shrink: 0;
+        margin-top: 1px;
+      }
+
+      /* Type specimens */
+      .type-row {
+        border-top: 1px solid var(--line);
+        padding: 28px 0;
+        display: grid;
+        gap: 16px;
+      }
+
+      @media (min-width: 768px) {
+        .type-row {
+          grid-template-columns: 220px 1fr;
+          gap: 32px;
+          align-items: baseline;
+        }
+      }
+
+      .type-meta h3 {
+        margin: 0;
+        font-family: var(--font-display);
+        font-size: 1.15rem;
+        font-weight: 600;
+      }
+
+      .type-meta p {
+        margin: 8px 0 0;
+        font-size: 0.85rem;
+        color: var(--muted);
+        line-height: 1.5;
+      }
+
+      .specimen-display {
+        font-family: var(--font-display);
+        font-weight: 600;
+        letter-spacing: -0.03em;
+        line-height: 1;
+        font-size: clamp(2rem, 5vw, 3.5rem);
+      }
+
+      .specimen-serif {
+        font-family: var(--font-serif);
+        font-style: italic;
+        font-size: clamp(2rem, 5vw, 3.25rem);
+        line-height: 1.1;
+        color: var(--accent);
+      }
+
+      .specimen-sans {
+        font-family: var(--font-sans);
+        font-size: 1.125rem;
+        line-height: 1.7;
+        color: var(--muted);
+        max-width: 40rem;
+      }
+
+      .specimen-mono {
+        font-family: var(--font-mono);
+        font-size: 11px;
+        text-transform: uppercase;
+        letter-spacing: 0.22em;
+        color: var(--accent);
+      }
+
+      .scale-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 8px;
+      }
+
+      .scale-table th,
+      .scale-table td {
+        text-align: left;
+        padding: 14px 12px;
+        border-bottom: 1px solid var(--line);
+        vertical-align: middle;
+      }
+
+      .scale-table th {
+        font-family: var(--font-mono);
+        font-size: 11px;
+        text-transform: uppercase;
+        letter-spacing: 0.16em;
+        color: var(--muted);
+        font-weight: 400;
+      }
+
+      .scale-table td:first-child {
+        width: 28%;
+      }
+
+      .scale-table code {
+        font-family: var(--font-mono);
+        font-size: 12px;
+        color: var(--muted);
+      }
+
+      /* Spacing bars */
+      .space-row {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        padding: 10px 0;
+        border-bottom: 1px solid var(--line);
+      }
+
+      .space-label {
+        width: 88px;
+        font-family: var(--font-mono);
+        font-size: 11px;
+        color: var(--muted);
+      }
+
+      .space-bar {
+        height: 12px;
+        border-radius: 4px;
+        background: var(--accent);
+        opacity: 0.85;
+      }
+
+      .space-value {
+        font-family: var(--font-mono);
+        font-size: 12px;
+        color: var(--ink);
+      }
+
+      /* Radius demos */
+      .radius-demo {
+        display: grid;
+        place-items: center;
+        height: 120px;
+        background: var(--elevated);
+        border: 1px solid var(--line);
+        color: var(--muted);
+        font-family: var(--font-mono);
+        font-size: 11px;
+        letter-spacing: 0.08em;
+      }
+
+      /* Buttons */
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        border-radius: var(--radius-pill);
+        padding: 12px 24px;
+        font-size: 0.875rem;
+        font-weight: 500;
+        letter-spacing: -0.01em;
+        text-decoration: none;
+        border: none;
+        cursor: pointer;
+        transition: color 0.3s, background 0.3s, border-color 0.3s;
+        font-family: var(--font-sans);
+      }
+
+      .btn-primary {
+        background: var(--accent);
+        color: var(--accent-ink);
+        box-shadow: 0 0 0 1px rgba(200, 245, 66, 0.2);
+      }
+
+      .btn-primary:hover {
+        background: var(--accent-hover);
+      }
+
+      .btn-secondary {
+        background: transparent;
+        color: var(--ink);
+        border: 1px solid rgba(244, 241, 234, 0.15);
+      }
+
+      .btn-secondary:hover {
+        border-color: rgba(244, 241, 234, 0.4);
+        background: rgba(244, 241, 234, 0.05);
+      }
+
+      .btn-ghost {
+        background: transparent;
+        color: var(--ink);
+        padding-left: 0;
+        padding-right: 0;
+      }
+
+      .btn-ghost:hover {
+        color: var(--accent);
+      }
+
+      .btn-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        align-items: center;
+      }
+
+      .arrow {
+        width: 14px;
+        height: 14px;
+        transition: transform 0.3s;
+      }
+
+      .btn:hover .arrow {
+        transform: translate(2px, -2px);
+      }
+
+      /* Forms */
+      label.field-label {
+        display: block;
+        margin-bottom: 8px;
+        font-size: 0.875rem;
+        color: var(--muted);
+      }
+
+      .field,
+      .textarea {
+        width: 100%;
+        border: 1px solid var(--line);
+        background: var(--bg);
+        color: var(--ink);
+        border-radius: var(--radius-input);
+        padding: 0 16px;
+        font: inherit;
+        font-size: 0.875rem;
+        outline: none;
+      }
+
+      .field {
+        height: 48px;
+      }
+
+      .textarea {
+        padding: 12px 16px;
+        resize: vertical;
+        min-height: 120px;
+      }
+
+      .field::placeholder,
+      .textarea::placeholder {
+        color: var(--muted);
+      }
+
+      .field:focus,
+      .textarea:focus {
+        box-shadow: 0 0 0 2px rgba(200, 245, 66, 0.4);
+      }
+
+      /* Badges */
+      .badge {
+        display: inline-flex;
+        align-items: center;
+        border-radius: var(--radius-pill);
+        border: 1px solid rgba(200, 245, 66, 0.3);
+        background: rgba(200, 245, 66, 0.1);
+        padding: 2px 8px;
+        font-family: var(--font-mono);
+        font-size: 10px;
+        text-transform: uppercase;
+        letter-spacing: 0.16em;
+        color: var(--accent);
+      }
+
+      .chip {
+        display: inline-flex;
+        align-items: center;
+        border-radius: var(--radius-pill);
+        border: 1px solid var(--line);
+        padding: 8px 16px;
+        font-size: 0.875rem;
+        color: var(--muted);
+      }
+
+      .chip-sm {
+        padding: 4px 12px;
+        font-size: 0.75rem;
+      }
+
+      /* Motion */
+      .motion-demo {
+        height: 64px;
+        border-radius: 16px;
+        background: var(--accent);
+        width: 64px;
+        animation: float-demo 3s var(--ease-out) infinite;
+      }
+
+      @keyframes float-demo {
+        0%,
+        100% {
+          transform: translateY(0);
+        }
+        50% {
+          transform: translateY(-12px);
+        }
+      }
+
+      .marquee {
+        overflow: hidden;
+        border-top: 1px solid var(--line);
+        border-bottom: 1px solid var(--line);
+      }
+
+      .marquee-track {
+        display: flex;
+        width: max-content;
+        gap: 40px;
+        padding: 16px 40px 16px 0;
+        animation: marquee 28s linear infinite;
+      }
+
+      .marquee-item {
+        display: flex;
+        align-items: center;
+        gap: 40px;
+        font-family: var(--font-display);
+        font-size: 0.875rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.2em;
+        color: rgba(244, 241, 234, 0.7);
+      }
+
+      .marquee-item span {
+        color: var(--accent);
+      }
+
+      @keyframes marquee {
+        from {
+          transform: translateX(0);
+        }
+        to {
+          transform: translateX(-50%);
+        }
+      }
+
+      /* Cursor demo */
+      .cursor-stage {
+        position: relative;
+        height: 180px;
+        border-radius: var(--radius-panel);
+        border: 1px solid var(--line);
+        background: var(--surface);
+        overflow: hidden;
+        display: grid;
+        place-items: center;
+        color: var(--muted);
+        font-size: 0.9rem;
+      }
+
+      .cursor-dot {
+        position: absolute;
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: var(--accent);
+        mix-blend-mode: difference;
+        left: 42%;
+        top: 48%;
+      }
+
+      .cursor-ring {
+        position: absolute;
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        border: 1px solid rgba(244, 241, 234, 0.4);
+        left: calc(42% - 12px);
+        top: calc(48% - 12px);
+      }
+
+      /* Code / tokens */
+      .code-block {
+        margin: 0;
+        padding: 20px;
+        border-radius: 16px;
+        border: 1px solid var(--line);
+        background: var(--bg);
+        overflow-x: auto;
+        font-family: var(--font-mono);
+        font-size: 12px;
+        line-height: 1.7;
+        color: var(--ink);
+      }
+
+      .code-block .c {
+        color: var(--muted);
+      }
+
+      .code-block .k {
+        color: var(--accent);
+      }
+
+      .code-block .v {
+        color: var(--warm);
+      }
+
+      /* Atmosphere previews */
+      .preview-box {
+        height: 160px;
+        border-radius: var(--radius-panel);
+        border: 1px solid var(--line);
+        overflow: hidden;
+        position: relative;
+      }
+
+      .preview-label {
+        position: absolute;
+        left: 16px;
+        bottom: 14px;
+        font-family: var(--font-mono);
+        font-size: 11px;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+        color: var(--ink);
+        background: rgba(5, 5, 5, 0.65);
+        padding: 6px 10px;
+        border-radius: 999px;
+        border: 1px solid var(--line);
+      }
+
+      .blur-orb {
+        position: absolute;
+        border-radius: 50%;
+        filter: blur(90px);
+      }
+
+      /* Z-index */
+      .z-stack {
+        display: grid;
+        gap: 8px;
+      }
+
+      .z-item {
+        display: grid;
+        grid-template-columns: 72px 1fr;
+        gap: 16px;
+        align-items: center;
+        padding: 12px 16px;
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        background: var(--surface);
+      }
+
+      .z-item strong {
+        font-family: var(--font-mono);
+        font-size: 12px;
+        color: var(--accent);
+      }
+
+      .z-item span {
+        font-size: 0.875rem;
+        color: var(--muted);
+      }
+
+      /* Breakpoints */
+      .bp {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        padding: 20px;
+        border: 1px solid var(--line);
+        border-radius: 16px;
+        background: var(--surface);
+      }
+
+      .bp strong {
+        font-family: var(--font-display);
+        font-size: 1.25rem;
+      }
+
+      .bp code {
+        font-family: var(--font-mono);
+        font-size: 12px;
+        color: var(--accent);
+      }
+
+      .bp span {
+        font-size: 0.85rem;
+        color: var(--muted);
+      }
+
+      /* Footer note */
+      .foot {
+        margin-top: 96px;
+        padding-top: 24px;
+        border-top: 1px solid var(--line);
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px 24px;
+        justify-content: space-between;
+        font-size: 0.75rem;
+        color: var(--muted);
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        html {
+          scroll-behavior: auto;
+        }
+        .motion-demo,
+        .marquee-track {
+          animation: none !important;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="grain" aria-hidden="true"></div>
+
+    <header class="topbar">
+      <div class="topbar-inner">
+        <a class="brand" href="#top">
+          <span class="brand-mark">4</span>
+          <span class="brand-name">Design System</span>
+        </a>
+        <nav class="toc" aria-label="On this page">
+          <a href="#colors">Colors</a>
+          <a href="#typography">Type</a>
+          <a href="#layout">Layout</a>
+          <a href="#radius">Radius</a>
+          <a href="#components">UI</a>
+          <a href="#atmosphere">Atmosphere</a>
+          <a href="#motion">Motion</a>
+          <a href="#tokens">Tokens</a>
+        </nav>
+      </div>
+    </header>
+
+    <main class="shell" id="top">
+      <!-- Hero -->
+      <header class="hero bg-radial-fade">
+        <div class="hero-grid bg-grid" aria-hidden="true"></div>
+        <p class="eyebrow">4wordtech · Visual language</p>
+        <h1 class="hero-title">
+          Design elements<br />
+          of the <em>whole site.</em>
+        </h1>
+        <p class="lede">
+          A living reference for colors, type, spacing, surfaces, controls, motion, and
+          atmosphere used across the 4wordtech marketing site. Sourced from
+          <code class="token">globals.css</code>, layout fonts, and shared UI components.
+        </p>
+        <div class="meta-row">
+          <span>Dark · Accent lime · Display + serif contrast</span>
+          <span>Next.js · Tailwind v4 · Motion</span>
+        </div>
+      </header>
+
+      <!-- Colors -->
+      <section class="doc" id="colors">
+        <div class="section-head">
+          <p class="eyebrow">01 · Palette</p>
+          <h2>Color system</h2>
+          <p>
+            Eight core CSS variables drive every surface, text, and accent. No purple
+            gradients — near-black fields, warm cream ink, and a sharp lime accent.
+          </p>
+        </div>
+
+        <div class="grid-4">
+          <article class="swatch">
+            <div class="swatch-chip" style="background: #050505"></div>
+            <div class="swatch-meta">
+              <strong>Background</strong>
+              <code>--bg / bg-bg</code>
+              <div class="hex">#050505</div>
+            </div>
+          </article>
+          <article class="swatch">
+            <div class="swatch-chip" style="background: #0e0e0e"></div>
+            <div class="swatch-meta">
+              <strong>Surface</strong>
+              <code>--surface / bg-surface</code>
+              <div class="hex">#0E0E0E</div>
+            </div>
+          </article>
+          <article class="swatch">
+            <div class="swatch-chip" style="background: #161616"></div>
+            <div class="swatch-meta">
+              <strong>Elevated</strong>
+              <code>--elevated / bg-elevated</code>
+              <div class="hex">#161616</div>
+            </div>
+          </article>
+          <article class="swatch">
+            <div class="swatch-chip" style="background: #242420"></div>
+            <div class="swatch-meta">
+              <strong>Line</strong>
+              <code>--line / border-line</code>
+              <div class="hex">#242420</div>
+            </div>
+          </article>
+          <article class="swatch">
+            <div class="swatch-chip" style="background: #f4f1ea"></div>
+            <div class="swatch-meta">
+              <strong>Ink</strong>
+              <code>--ink / text-ink</code>
+              <div class="hex">#F4F1EA</div>
+            </div>
+          </article>
+          <article class="swatch">
+            <div class="swatch-chip" style="background: #8a867e"></div>
+            <div class="swatch-meta">
+              <strong>Muted</strong>
+              <code>--muted / text-muted</code>
+              <div class="hex">#8A867E</div>
+            </div>
+          </article>
+          <article class="swatch">
+            <div class="swatch-chip" style="background: #c8f542"></div>
+            <div class="swatch-meta">
+              <strong>Accent</strong>
+              <code>--accent / text-accent</code>
+              <div class="hex">#C8F542</div>
+            </div>
+          </article>
+          <article class="swatch">
+            <div class="swatch-chip" style="background: #12140a"></div>
+            <div class="swatch-meta">
+              <strong>Accent ink</strong>
+              <code>--accent-ink</code>
+              <div class="hex">#12140A</div>
+            </div>
+          </article>
+        </div>
+
+        <div class="grid-2" style="margin-top: 16px">
+          <div class="panel">
+            <p class="eyebrow muted">Usage</p>
+            <ul class="usage-list">
+              <li><strong style="color: var(--ink)">bg</strong> — page canvas, form fields, nested cards on surface</li>
+              <li><strong style="color: var(--ink)">surface</strong> — footer, cards, section bands</li>
+              <li><strong style="color: var(--ink)">elevated</strong> — CTA banners, hover lifts</li>
+              <li><strong style="color: var(--ink)">ink</strong> — primary text, logo, nav hover</li>
+              <li><strong style="color: var(--ink)">muted</strong> — body copy, labels, secondary links</li>
+              <li><strong style="color: var(--ink)">accent</strong> — eyebrows, CTAs, focus rings, highlights</li>
+            </ul>
+          </div>
+          <div class="panel">
+            <p class="eyebrow muted">Derived / special</p>
+            <ul class="usage-list">
+              <li>Primary hover: <code class="token">#d6ff62</code></li>
+              <li>Warm radial glow: <code class="token">#E4C9A5</code> at ~7–10% opacity</li>
+              <li>Selection: accent fill + accent-ink text</li>
+              <li>Error (forms): Tailwind <code class="token">text-red-400</code></li>
+              <li>Ink alphas: <code class="token">ink/85</code>, <code class="token">ink/80</code>, <code class="token">ink/70</code>, <code class="token">ink/40</code>, <code class="token">ink/35</code>, <code class="token">ink/15</code>, <code class="token">ink/5</code></li>
+              <li>Accent alphas: <code class="token">accent/40</code>, <code class="token">accent/30</code>, <code class="token">accent/10</code></li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- Typography -->
+      <section class="doc" id="typography">
+        <div class="section-head">
+          <p class="eyebrow">02 · Type</p>
+          <h2>Typography</h2>
+          <p>
+            Four families via <code class="token">next/font/google</code>: Syne for display,
+            Geist for UI, Instrument Serif for emphasis, Geist Mono for labels.
+          </p>
+        </div>
+
+        <div class="panel" style="padding-top: 8px; padding-bottom: 8px">
+          <div class="type-row">
+            <div class="type-meta">
+              <h3>Syne · Display</h3>
+              <p>
+                <code class="token">font-display</code> · weights 500–800<br />
+                Headlines, logos-adjacent titles, mobile nav, marquee
+              </p>
+            </div>
+            <div class="specimen-display">We provide IT services that ship.</div>
+          </div>
+          <div class="type-row">
+            <div class="type-meta">
+              <h3>Instrument Serif</h3>
+              <p>
+                <code class="token">font-serif</code> · 400 normal + italic<br />
+                Accent words inside headlines (<em>ship.</em>)
+              </p>
+            </div>
+            <div class="specimen-serif">ship. · brochure voice.</div>
+          </div>
+          <div class="type-row">
+            <div class="type-meta">
+              <h3>Geist · Sans</h3>
+              <p>
+                <code class="token">font-sans</code> · body default<br />
+                Paragraphs, nav links, buttons, forms
+              </p>
+            </div>
+            <div class="specimen-sans">
+              4wordtech is a startup helping clients with websites, apps, cloud, AI, and
+              ongoing support — from first brief to live product.
+            </div>
+          </div>
+          <div class="type-row" style="border-bottom: none">
+            <div class="type-meta">
+              <h3>Geist Mono</h3>
+              <p>
+                <code class="token">font-mono</code><br />
+                Eyebrows, section indexes, badges, footer column titles
+              </p>
+            </div>
+            <div class="specimen-mono">Startup IT services studio</div>
+          </div>
+        </div>
+
+        <div class="panel" style="margin-top: 16px; overflow-x: auto">
+          <p class="eyebrow muted">Type scale (common patterns)</p>
+          <table class="scale-table">
+            <thead>
+              <tr>
+                <th>Role</th>
+                <th>Specimen</th>
+                <th>Classes / size</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>Hero H1</code></td>
+                <td style="font-family: var(--font-display); font-weight: 600; font-size: 2rem; letter-spacing: -0.04em; line-height: 0.95">
+                  Hero title
+                </td>
+                <td><code>clamp(2.6rem, 8vw, 7.2rem)</code> · leading 0.95 · tracking -0.04em</td>
+              </tr>
+              <tr>
+                <td><code>Page H1</code></td>
+                <td style="font-family: var(--font-display); font-weight: 600; font-size: 1.75rem">
+                  Page headline
+                </td>
+                <td><code>text-4xl → md:text-6xl</code> · tracking-tight</td>
+              </tr>
+              <tr>
+                <td><code>Section H2</code></td>
+                <td style="font-family: var(--font-display); font-weight: 600; font-size: 1.5rem">
+                  Section title
+                </td>
+                <td><code>text-3xl → sm:text-4xl → md:text-5xl</code></td>
+              </tr>
+              <tr>
+                <td><code>Card H3</code></td>
+                <td style="font-family: var(--font-display); font-weight: 600; font-size: 1.35rem">
+                  Card title
+                </td>
+                <td><code>text-2xl</code> · font-semibold · tracking-tight</td>
+              </tr>
+              <tr>
+                <td><code>FAQ summary</code></td>
+                <td style="font-family: var(--font-display); font-weight: 600; font-size: 1.2rem">
+                  Question line
+                </td>
+                <td><code>text-xl</code> · font-semibold</td>
+              </tr>
+              <tr>
+                <td><code>Body</code></td>
+                <td style="color: var(--muted)">Supporting paragraph</td>
+                <td><code>text-base / md:text-lg</code> · leading-relaxed · text-muted</td>
+              </tr>
+              <tr>
+                <td><code>Small / UI</code></td>
+                <td style="font-size: 0.875rem; color: var(--muted)">Nav · buttons · cards</td>
+                <td><code>text-sm</code></td>
+              </tr>
+              <tr>
+                <td><code>Caption</code></td>
+                <td style="font-size: 0.75rem; color: var(--muted)">Legal · footer meta</td>
+                <td><code>text-xs</code></td>
+              </tr>
+              <tr>
+                <td><code>Eyebrow</code></td>
+                <td style="font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--accent)">
+                  Label
+                </td>
+                <td><code>11px</code> · uppercase · tracking 0.18–0.22em</td>
+              </tr>
+              <tr>
+                <td><code>Badge</code></td>
+                <td><span class="badge">Placeholder</span></td>
+                <td><code>10px</code> mono · tracking 0.16em</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- Layout -->
+      <section class="doc" id="layout">
+        <div class="section-head">
+          <p class="eyebrow">03 · Structure</p>
+          <h2>Layout &amp; spacing</h2>
+          <p>
+            One content rail, consistent gutters, and vertical rhythm that breathes —
+            sections typically stack at 80–112px.
+          </p>
+        </div>
+
+        <div class="grid-3">
+          <div class="bp">
+            <code>Container</code>
+            <strong>1400px</strong>
+            <span>max-w-[1400px] · mx-auto · primary content width</span>
+          </div>
+          <div class="bp">
+            <code>Prose / FAQ</code>
+            <strong>900px / 3xl</strong>
+            <span>Legal max-w-3xl · FAQ max-w-[900px]</span>
+          </div>
+          <div class="bp">
+            <code>Header height</code>
+            <strong>72px</strong>
+            <span>Fixed header · mobile overlay offset</span>
+          </div>
+          <div class="bp">
+            <code>Gutter</code>
+            <strong>20 → 32</strong>
+            <span>px-5 · md:px-8</span>
+          </div>
+          <div class="bp">
+            <code>Section Y</code>
+            <strong>80 → 112</strong>
+            <span>py-20 · md:py-28 (common)</span>
+          </div>
+          <div class="bp">
+            <code>Page top</code>
+            <strong>128 → 160</strong>
+            <span>pt-32 · md:pt-40 under fixed nav</span>
+          </div>
+        </div>
+
+        <div class="panel" style="margin-top: 16px">
+          <p class="eyebrow muted">Spacing scale (frequent Tailwind steps)</p>
+          <div class="space-row"><span class="space-label">gap-2</span><div class="space-bar" style="width: 8px"></div><span class="space-value">8px · chips</span></div>
+          <div class="space-row"><span class="space-label">gap-3</span><div class="space-bar" style="width: 12px"></div><span class="space-value">12px · CTA groups</span></div>
+          <div class="space-row"><span class="space-label">gap-4</span><div class="space-bar" style="width: 16px"></div><span class="space-value">16px · card grids</span></div>
+          <div class="space-row"><span class="space-label">gap-5</span><div class="space-bar" style="width: 20px"></div><span class="space-value">20px · work list</span></div>
+          <div class="space-row"><span class="space-label">gap-6</span><div class="space-bar" style="width: 24px"></div><span class="space-value">24px · section headers</span></div>
+          <div class="space-row"><span class="space-label">gap-8</span><div class="space-bar" style="width: 32px"></div><span class="space-value">32px · nav · form clusters</span></div>
+          <div class="space-row"><span class="space-label">gap-10</span><div class="space-bar" style="width: 40px"></div><span class="space-value">40px · CTA banner split</span></div>
+          <div class="space-row" style="border-bottom: none"><span class="space-label">gap-12</span><div class="space-bar" style="width: 48px"></div><span class="space-value">48px · footer / about grids</span></div>
+        </div>
+
+        <div class="grid-2" style="margin-top: 16px">
+          <div class="panel">
+            <p class="eyebrow muted">Grid patterns</p>
+            <ul class="usage-list">
+              <li>12-column splits: <code class="token">md:grid-cols-12</code> (5/7, 4/8, 6/6, 7/5)</li>
+              <li>Service cards: 1 → 2 → 3 cols (<code class="token">md / xl</code>)</li>
+              <li>Why / pillars: 2 → 4 with 1px gap on <code class="token">bg-line</code></li>
+              <li>Process: 4 equal columns on desktop</li>
+              <li>Stats: 2 → 4 columns</li>
+            </ul>
+          </div>
+          <div class="panel">
+            <p class="eyebrow muted">Breakpoints in use</p>
+            <ul class="usage-list">
+              <li><code class="token">sm</code> — button rows, footer legal</li>
+              <li><code class="token">md</code> — gutters, type steps, most grids</li>
+              <li><code class="token">lg</code> — desktop header nav (≥1024)</li>
+              <li><code class="token">xl</code> — 3-col services, 4-col pillars</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- Radius / borders -->
+      <section class="doc" id="radius">
+        <div class="section-head">
+          <p class="eyebrow">04 · Shape</p>
+          <h2>Radius, borders &amp; elevation</h2>
+          <p>
+            Soft large radii for panels; full pills for actions and tags. Borders stay
+            hairline <code class="token">border-line</code> — almost no drop shadows.
+          </p>
+        </div>
+
+        <div class="grid-4">
+          <div>
+            <div class="radius-demo" style="border-radius: 9999px">pill</div>
+            <p style="margin: 10px 0 0; font-size: 0.85rem; color: var(--muted)">
+              Buttons, chips, inputs (newsletter), badges · <code class="token">rounded-full</code>
+            </p>
+          </div>
+          <div>
+            <div class="radius-demo" style="border-radius: 28px">28px</div>
+            <p style="margin: 10px 0 0; font-size: 0.85rem; color: var(--muted)">
+              Large panels, CTA, work cards · <code class="token">rounded-[28px]</code>
+            </p>
+          </div>
+          <div>
+            <div class="radius-demo" style="border-radius: 24px">24px</div>
+            <p style="margin: 10px 0 0; font-size: 0.85rem; color: var(--muted)">
+              Service / pillar cards · <code class="token">rounded-3xl</code>
+            </p>
+          </div>
+          <div>
+            <div class="radius-demo" style="border-radius: 16px">16px</div>
+            <p style="margin: 10px 0 0; font-size: 0.85rem; color: var(--muted)">
+              Form fields · <code class="token">rounded-2xl</code>
+            </p>
+          </div>
+        </div>
+
+        <div class="grid-2" style="margin-top: 16px">
+          <div class="panel">
+            <p class="eyebrow muted">Borders</p>
+            <ul class="usage-list">
+              <li>Global default border color = <code class="token">--line</code></li>
+              <li>Dividers: <code class="token">border-t / border-y / divide-y</code></li>
+              <li>Hover lift: <code class="token">hover:border-accent/40</code></li>
+              <li>Secondary button: <code class="token">border-ink/15 → /40</code></li>
+              <li>Process accent rule: <code class="token">border-t border-accent/40</code></li>
+            </ul>
+          </div>
+          <div class="panel">
+            <p class="eyebrow muted">Shadows &amp; blur</p>
+            <ul class="usage-list">
+              <li>Primary CTA ring: <code class="token">shadow-[0_0_0_1px_rgba(200,245,66,0.2)]</code></li>
+              <li>Header scrolled: <code class="token">bg-bg/80 backdrop-blur-xl</code></li>
+              <li>Decorative orbs: <code class="token">blur-[90px]</code> / <code class="token">blur-[100px]</code></li>
+              <li>No multi-layer soft UI shadows on cards</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- Components -->
+      <section class="doc" id="components">
+        <div class="section-head">
+          <p class="eyebrow">05 · Components</p>
+          <h2>UI patterns</h2>
+          <p>
+            Shared building blocks from <code class="token">src/components/ui.tsx</code> and
+            site chrome. Prefer these over inventing new control styles.
+          </p>
+        </div>
+
+        <div class="grid-2">
+          <div class="panel">
+            <p class="eyebrow muted">Buttons</p>
+            <div class="btn-row" style="margin-top: 8px">
+              <button class="btn btn-primary" type="button">
+                Primary
+                <svg class="arrow" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                  <path d="M3 13L13 3M13 3H5.5M13 3V10.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+              </button>
+              <button class="btn btn-secondary" type="button">Secondary</button>
+              <button class="btn btn-ghost" type="button">Ghost</button>
+            </div>
+            <ul class="usage-list">
+              <li>All: <code class="token">rounded-full px-6 py-3 text-sm font-medium</code></li>
+              <li>Transition: colors · 300ms</li>
+              <li>Magnetic wrapper on primary hero CTA (spring follow)</li>
+            </ul>
+          </div>
+
+          <div class="panel">
+            <p class="eyebrow muted">Badges &amp; chips</p>
+            <div class="btn-row" style="margin-top: 8px">
+              <span class="badge">Placeholder</span>
+              <span class="chip">Tech stack chip</span>
+              <span class="chip chip-sm">Tag</span>
+            </div>
+            <ul class="usage-list">
+              <li>PlaceholderBadge: accent tint + mono 10px</li>
+              <li>Stack / industry chips: border-line pills</li>
+              <li>Duration / meta: smaller chip-sm style</li>
+            </ul>
+          </div>
+
+          <div class="panel">
+            <p class="eyebrow muted">Form controls</p>
+            <form style="display: grid; gap: 16px; margin-top: 8px" onsubmit="return false">
+              <div>
+                <label class="field-label" for="demo-name">Name</label>
+                <input class="field" id="demo-name" placeholder="Your name" />
+              </div>
+              <div>
+                <label class="field-label" for="demo-msg">Message</label>
+                <textarea class="textarea" id="demo-msg" placeholder="What IT work do you need?"></textarea>
+              </div>
+              <div>
+                <button class="btn btn-primary" type="button">Send message</button>
+              </div>
+            </form>
+            <ul class="usage-list">
+              <li>Inputs: h-12 · rounded-2xl · border-line · bg-bg</li>
+              <li>Focus: <code class="token">ring-2 ring-accent/40</code></li>
+              <li>Newsletter field uses <code class="token">rounded-full</code></li>
+            </ul>
+          </div>
+
+          <div class="panel">
+            <p class="eyebrow muted">Section header recipe</p>
+            <p class="eyebrow" style="margin-top: 8px">Services</p>
+            <h3 style="margin: 0; font-family: var(--font-display); font-size: 2rem; font-weight: 600; letter-spacing: -0.02em">
+              Clear outcomes, not <em style="font-family: var(--font-serif); font-style: italic; font-weight: 400; color: var(--muted)">brochure voice.</em>
+            </h3>
+            <p style="margin: 16px 0 0; color: var(--muted); max-width: 28rem; line-height: 1.65">
+              Eyebrow (mono accent) → display title → optional muted body → optional action.
+            </p>
+            <ul class="usage-list">
+              <li>Spacing: mb-12 · md:mb-16 · flex row on desktop</li>
+              <li>Body max-w-xl · text-base / md:text-lg</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="panel elevated" style="margin-top: 16px">
+          <div style="display: flex; flex-wrap: wrap; gap: 24px; align-items: end; justify-content: space-between">
+            <div style="max-width: 36rem">
+              <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 16px">
+                <p class="eyebrow" style="margin: 0">Ready when you are</p>
+                <span class="badge">Placeholder</span>
+              </div>
+              <h3 style="margin: 0; font-family: var(--font-display); font-size: clamp(1.75rem, 4vw, 3rem); font-weight: 600; letter-spacing: -0.02em">
+                CTA banner pattern
+              </h3>
+              <p style="margin: 16px 0 0; color: var(--muted)">
+                Elevated surface · 28px radius · large type · dual buttons aligned to end on desktop.
+              </p>
+            </div>
+            <div class="btn-row">
+              <button class="btn btn-primary" type="button">Book a free consultation</button>
+              <button class="btn btn-secondary" type="button">See example work</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="grid-3" style="margin-top: 16px">
+          <div class="panel" style="transition: border-color 0.3s, background 0.3s" onmouseenter="this.style.borderColor='rgba(200,245,66,0.4)';this.style.background='var(--elevated)'" onmouseleave="this.style.borderColor='var(--line)';this.style.background='var(--surface)'">
+            <p class="eyebrow muted">01</p>
+            <h3 style="margin: 24px 0 0; font-family: var(--font-display); font-size: 1.35rem; font-weight: 600">Hover card</h3>
+            <p style="margin: 12px 0 0; font-size: 0.875rem; color: var(--muted); line-height: 1.6">
+              border-line → accent/40 · surface → elevated · 300ms
+            </p>
+          </div>
+          <div class="panel flat">
+            <p class="eyebrow muted">Links</p>
+            <ul class="usage-list">
+              <li>Nav: muted → ink</li>
+              <li>Footer: ink/85 → accent</li>
+              <li>Underline offset 4px · thickness 1px</li>
+            </ul>
+          </div>
+          <div class="panel flat">
+            <p class="eyebrow muted">Iconography</p>
+            <ul class="usage-list">
+              <li>Inline SVG arrow (16 viewBox)</li>
+              <li>Marquee separator ✦ in accent</li>
+              <li>Logo SVG inherits <code class="token">currentColor</code></li>
+              <li>Hamburger: two 1px ink bars</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- Atmosphere -->
+      <section class="doc" id="atmosphere">
+        <div class="section-head">
+          <p class="eyebrow">06 · Atmosphere</p>
+          <h2>Backgrounds &amp; texture</h2>
+          <p>
+            Depth comes from grid, soft radials, grain overlay, and blur orbs — not from
+            stacked cards or purple glows.
+          </p>
+        </div>
+
+        <div class="grid-2">
+          <div class="preview-box bg-grid" style="background-color: var(--bg)">
+            <span class="preview-label">.bg-grid · 80×80</span>
+          </div>
+          <div class="preview-box bg-radial-fade">
+            <span class="preview-label">.bg-radial-fade</span>
+          </div>
+          <div class="preview-box" style="background: var(--bg)">
+            <div class="blur-orb" style="left: -20px; top: 20px; width: 160px; height: 160px; background: rgba(200, 245, 66, 0.18)"></div>
+            <div class="blur-orb" style="right: -10px; bottom: -20px; width: 180px; height: 180px; background: rgba(228, 201, 165, 0.16); filter: blur(100px)"></div>
+            <span class="preview-label">Accent / warm blur orbs</span>
+          </div>
+          <div class="preview-box" style="background: var(--bg)">
+            <div style="position: absolute; inset: 0; opacity: 0.35; mix-blend-mode: overlay; background-image: url(&quot;data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E&quot;)"></div>
+            <span class="preview-label">.grain · opacity 0.18 · overlay</span>
+          </div>
+        </div>
+
+        <div class="panel" style="margin-top: 16px">
+          <p class="eyebrow muted">Text outline utility</p>
+          <p class="text-outline" style="font-family: var(--font-display); font-size: clamp(2.5rem, 8vw, 4.5rem); font-weight: 700; letter-spacing: -0.04em; margin: 8px 0 0; line-height: 1">
+            OUTLINE
+          </p>
+          <p style="margin: 12px 0 0; color: var(--muted); font-size: 0.9rem">
+            <code class="token">.text-outline</code> — 1px stroke at ink 35%, fill transparent
+          </p>
+        </div>
+      </section>
+
+      <!-- Motion -->
+      <section class="doc" id="motion">
+        <div class="section-head">
+          <p class="eyebrow">07 · Motion</p>
+          <h2>Motion &amp; interaction</h2>
+          <p>
+            Motion library with a shared ease curve. Respects
+            <code class="token">prefers-reduced-motion</code> everywhere.
+          </p>
+        </div>
+
+        <div class="grid-2">
+          <div class="panel">
+            <p class="eyebrow muted">Reveal</p>
+            <div style="display: flex; align-items: end; gap: 24px; margin: 16px 0 8px">
+              <div class="motion-demo" aria-hidden="true"></div>
+              <div>
+                <p style="margin: 0; font-size: 0.9rem; color: var(--muted)">opacity 0 → 1 · y 28 → 0</p>
+                <p style="margin: 6px 0 0; font-family: var(--font-mono); font-size: 11px; color: var(--accent)">duration 0.8 · ease [0.22, 1, 0.36, 1]</p>
+              </div>
+            </div>
+            <ul class="usage-list">
+              <li>Viewport once · margin -80px</li>
+              <li>Stagger via delay prop (0.06–0.15 steps)</li>
+              <li>Hero lines: y 110% mask reveal ~0.95s</li>
+            </ul>
+          </div>
+          <div class="panel">
+            <p class="eyebrow muted">Other motion</p>
+            <ul class="usage-list">
+              <li>Header hide on scroll down (y &gt; 80): translate -96px · 0.35s</li>
+              <li>Magnetic: spring stiffness 260 · damping 18</li>
+              <li>Logo float: 14s easeInOut y/rotate loop</li>
+              <li>Marquee: 28s linear infinite</li>
+              <li>Custom cursor springs (dot + ring)</li>
+              <li>CSS: scroll-behavior smooth (disabled when reduced)</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="marquee" style="margin-top: 16px" aria-hidden="true">
+          <div class="marquee-track">
+            <span class="marquee-item">Product <span>✦</span></span>
+            <span class="marquee-item">Cloud <span>✦</span></span>
+            <span class="marquee-item">AI <span>✦</span></span>
+            <span class="marquee-item">Support <span>✦</span></span>
+            <span class="marquee-item">Product <span>✦</span></span>
+            <span class="marquee-item">Cloud <span>✦</span></span>
+            <span class="marquee-item">AI <span>✦</span></span>
+            <span class="marquee-item">Support <span>✦</span></span>
+          </div>
+        </div>
+
+        <div class="grid-2" style="margin-top: 16px">
+          <div class="cursor-stage">
+            <div class="cursor-dot"></div>
+            <div class="cursor-ring"></div>
+            Custom cursor · fine pointer only · mix-blend-difference dot
+          </div>
+          <div class="panel">
+            <p class="eyebrow muted">Z-index layers</p>
+            <div class="z-stack" style="margin-top: 12px">
+              <div class="z-item"><strong>90</strong><span>Custom cursor</span></div>
+              <div class="z-item"><strong>80</strong><span>Grain overlay</span></div>
+              <div class="z-item"><strong>50</strong><span>Site header</span></div>
+              <div class="z-item"><strong>40</strong><span>Mobile nav overlay</span></div>
+              <div class="z-item"><strong>-10</strong><span>Background blur orbs</span></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Tokens -->
+      <section class="doc" id="tokens">
+        <div class="section-head">
+          <p class="eyebrow">08 · Source of truth</p>
+          <h2>CSS variables &amp; file map</h2>
+          <p>
+            Tokens live in <code class="token">src/app/globals.css</code> and are exposed to
+            Tailwind via <code class="token">@theme inline</code>.
+          </p>
+        </div>
+
+        <div class="grid-2">
+          <pre class="code-block"><span class="c">/* :root */</span>
+<span class="k">--bg</span>: <span class="v">#050505</span>;
+<span class="k">--surface</span>: <span class="v">#0e0e0e</span>;
+<span class="k">--elevated</span>: <span class="v">#161616</span>;
+<span class="k">--ink</span>: <span class="v">#f4f1ea</span>;
+<span class="k">--muted</span>: <span class="v">#8a867e</span>;
+<span class="k">--line</span>: <span class="v">#242420</span>;
+<span class="k">--accent</span>: <span class="v">#c8f542</span>;
+<span class="k">--accent-ink</span>: <span class="v">#12140a</span>;</pre>
+
+          <pre class="code-block"><span class="c">/* @theme inline → Tailwind */</span>
+<span class="k">--color-bg</span> → bg-bg / text-bg
+<span class="k">--color-surface</span> → bg-surface
+<span class="k">--color-elevated</span> → bg-elevated
+<span class="k">--color-ink</span> → text-ink
+<span class="k">--color-muted</span> → text-muted
+<span class="k">--color-line</span> → border-line
+<span class="k">--color-accent</span> → text-accent / bg-accent
+<span class="k">--color-accent-ink</span> → text-accent-ink
+<span class="k">--font-sans | display | serif | mono</span></pre>
+        </div>
+
+        <div class="panel" style="margin-top: 16px">
+          <p class="eyebrow muted">Key files</p>
+          <ul class="usage-list">
+            <li><code class="token">src/app/globals.css</code> — tokens, utilities, selection, reduced motion</li>
+            <li><code class="token">src/app/layout.tsx</code> — Geist, Syne, Instrument Serif, grain, chrome</li>
+            <li><code class="token">src/components/ui.tsx</code> — Button, Reveal, SectionHeader, Marquee, Magnetic, Badge</li>
+            <li><code class="token">src/components/CustomCursor.tsx</code> — cursor system</li>
+            <li><code class="token">src/components/SiteHeader.tsx</code> / <code class="token">SiteFooter.tsx</code> — chrome</li>
+            <li><code class="token">src/components/home/Hero.tsx</code> — hero type + atmosphere recipe</li>
+            <li><code class="token">src/components/CtaBanner.tsx</code> — elevated CTA panel</li>
+            <li><code class="token">src/components/ContactForm.tsx</code> — form control styles</li>
+            <li><code class="token">src/components/Logo.tsx</code> — wordmark SVG</li>
+          </ul>
+        </div>
+
+        <div class="grid-2" style="margin-top: 16px">
+          <div class="panel">
+            <p class="eyebrow muted">Do</p>
+            <ul class="usage-list">
+              <li>Use display + serif contrast sparingly in headlines</li>
+              <li>Keep CTAs lime pills; secondary as quiet outline</li>
+              <li>Stick to the 1400px rail and 28px panel radius</li>
+              <li>Honor reduced-motion (skip springs / loops)</li>
+            </ul>
+          </div>
+          <div class="panel">
+            <p class="eyebrow muted">Don’t</p>
+            <ul class="usage-list">
+              <li>Introduce purple / indigo gradient themes</li>
+              <li>Default to Inter / Roboto / system-only stacks</li>
+              <li>Add heavy multi-shadow card chrome</li>
+              <li>Crowd the hero with stats, chips, or promo stickers</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <footer class="foot">
+        <p>4wordtech design overview · generated from the live site tokens</p>
+        <p>Open this file in a browser · path: <code class="token">design/design.html</code></p>
+      </footer>
+    </main>
+  </body>
+</html>
