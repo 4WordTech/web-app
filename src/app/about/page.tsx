@@ -2,11 +2,13 @@ import type { Metadata } from "next";
 import { CtaBanner } from "@/components/CtaBanner";
 import { PlaceholderBadge, Reveal } from "@/components/ui";
 import { about } from "@/lib/content";
+import { pageMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
   title: "About",
   description: "4wordtech is a startup providing IT services to clients.",
-};
+  path: "/about",
+});
 
 export default function AboutPage() {
   return (

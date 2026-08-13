@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import { Logo } from "@/components/Logo";
 import { Button } from "@/components/ui";
@@ -13,6 +13,8 @@ export function SiteHeader() {
   const [hidden, setHidden] = useState(false);
   const [open, setOpen] = useState(false);
   const reduce = useReducedMotion();
+  const menuButtonRef = useRef<HTMLButtonElement>(null);
+  const firstLinkRef = useRef<HTMLAnchorElement>(null);
 
   useEffect(() => {
     let last = window.scrollY;
@@ -33,6 +35,26 @@ export function SiteHeader() {
       document.body.style.overflow = "";
     };
   }, [open]);
+
+  useEffect(() => {
+    if (!open) return;
+
+    firstLinkRef.current?.focus();
+
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        setOpen(false);
+        menuButtonRef.current?.focus();
+      }
+    };
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
+  }, [open]);
+
+  function closeMenu() {
+    setOpen(false);
+    menuButtonRef.current?.focus();
+  }
 
   return (
     <>
@@ -66,9 +88,11 @@ export function SiteHeader() {
           </div>
 
           <button
+            ref={menuButtonRef}
             type="button"
             className="relative flex h-10 w-10 items-center justify-center lg:hidden"
             aria-label={open ? "Close menu" : "Open menu"}
+            aria-expanded={open}
             onClick={() => setOpen((v) => !v)}
           >
             <span
@@ -105,8 +129,9 @@ export function SiteHeader() {
                     transition={{ delay: 0.06 * i, duration: 0.45 }}
                   >
                     <Link
+                      ref={i === 0 ? firstLinkRef : undefined}
                       href={item.href}
-                      onClick={() => setOpen(false)}
+                      onClick={closeMenu}
                       className="font-display text-4xl font-semibold tracking-tight"
                     >
                       {item.label}
@@ -114,7 +139,7 @@ export function SiteHeader() {
                   </motion.div>
                 ))}
               </div>
-              <Button href="/contact" className="w-full" onClick={() => setOpen(false)}>
+              <Button href="/contact" className="w-full" onClick={closeMenu}>
                 Book a free consultation
               </Button>
             </nav>

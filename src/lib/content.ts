@@ -375,10 +375,10 @@ export const clientTypes = [
 ];
 
 export const stats = [
-  { value: "7", label: "IT service lines", placeholder: false },
-  { value: "4", label: "Delivery phases", placeholder: false },
-  { value: "Weekly", label: "Client demos", placeholder: false },
-  { value: "1 studio", label: "Design + build + support", placeholder: false },
+  { value: "7", label: "IT service lines" },
+  { value: "4", label: "Delivery phases" },
+  { value: "Weekly", label: "Client demos" },
+  { value: "1 studio", label: "Design + build + support" },
 ];
 
 export const industries = [

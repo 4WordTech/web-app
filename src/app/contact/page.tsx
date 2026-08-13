@@ -2,11 +2,14 @@ import type { Metadata } from "next";
 import { ContactForm } from "@/components/ContactForm";
 import { PlaceholderBadge, Reveal } from "@/components/ui";
 import { site } from "@/lib/content";
+import { pageMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
   title: "Contact",
-  description: "Get in touch with 4wordtech for IT services — websites, apps, cloud, AI, and support.",
-};
+  description:
+    "Get in touch with 4wordtech for IT services — websites, apps, cloud, AI, and support.",
+  path: "/contact",
+});
 
 export default function ContactPage() {
   return (
@@ -26,9 +29,9 @@ export default function ContactPage() {
 
           <dl className="mt-10 space-y-5 text-sm">
             <Row label="Email" value={site.email} href={`mailto:${site.email}`} />
-            <Row label="Phone" value={site.phone} href={`tel:${site.phone.replace(/\s/g, "")}`} badge />
-            <Row label="WhatsApp" value="Message us" href={site.whatsapp} badge />
-            <Row label="Calendar" value="Book a slot" href={site.calendarUrl} badge />
+            <Row label="Phone" value={site.phone} badge />
+            <Row label="WhatsApp" value="Message us" badge />
+            <Row label="Calendar" value="Book a slot" badge />
             <Row label="Studio" value={site.location} badge />
           </dl>
         </Reveal>
@@ -50,17 +53,13 @@ export default function ContactPage() {
               <PlaceholderBadge />
             </div>
             <p className="text-sm text-muted">
-              Drop a Calendly / SavvyCal iframe here later. For now, use the
-              booking link above.
+              Drop a Calendly / SavvyCal iframe here later. Booking link stays a
+              placeholder until you replace the URL in content.
             </p>
-            <a
-              href={site.calendarUrl}
-              className="mt-4 inline-block text-sm text-accent hover:underline"
-              target="_blank"
-              rel="noreferrer"
-            >
+            <p className="mt-4 inline-flex items-center gap-2 text-sm text-muted">
               Open booking link →
-            </a>
+              <PlaceholderBadge />
+            </p>
           </div>
         </Reveal>
       </div>
@@ -84,7 +83,7 @@ function Row({
       <dt className="text-muted">{label}</dt>
       <dd className="flex items-center gap-2 text-right">
         {href ? (
-          <a href={href} className="hover:text-accent" target={href.startsWith("http") ? "_blank" : undefined} rel="noreferrer">
+          <a href={href} className="hover:text-accent" target={href.startsWith("http") ? "_blank" : undefined} rel="noopener noreferrer">
             {value}
           </a>
         ) : (

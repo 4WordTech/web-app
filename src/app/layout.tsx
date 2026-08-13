@@ -4,6 +4,7 @@ import { CustomCursor } from "@/components/CustomCursor";
 import { SiteFooter } from "@/components/SiteFooter";
 import { SiteHeader } from "@/components/SiteHeader";
 import { site } from "@/lib/content";
+import { absoluteUrl, SITE_URL } from "@/lib/seo";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -30,12 +31,13 @@ const instrument = Instrument_Serif({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://4wordtech.com"),
+  metadataBase: new URL(SITE_URL),
   title: {
     default: `${site.name} — ${site.tagline}`,
     template: `%s · ${site.name}`,
   },
   description: site.description,
+  applicationName: site.name,
   keywords: [
     "IT services",
     "web development",
@@ -43,16 +45,40 @@ export const metadata: Metadata = {
     "4wordtech",
     "startup IT studio",
   ],
+  authors: [{ name: site.name, url: SITE_URL }],
+  creator: site.name,
+  publisher: site.name,
+  formatDetection: {
+    email: false,
+    address: false,
+    telephone: false,
+  },
+  alternates: {
+    canonical: absoluteUrl("/"),
+  },
   openGraph: {
     title: `${site.name} — ${site.tagline}`,
     description: site.description,
+    url: SITE_URL,
     siteName: site.name,
+    locale: "en_IN",
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
     title: `${site.name} — ${site.tagline}`,
     description: site.description,
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+      "max-video-preview": -1,
+    },
   },
 };
 
@@ -62,7 +88,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       lang="en"
       className={`${geistSans.variable} ${geistMono.variable} ${syne.variable} ${instrument.variable} h-full antialiased`}
     >
-      <body className="min-h-full bg-bg font-sans text-ink">
+      <body className="flex min-h-full flex-col bg-bg font-sans text-ink">
         <div className="grain" aria-hidden />
         <CustomCursor />
         <SiteHeader />

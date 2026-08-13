@@ -42,7 +42,7 @@ export function SiteFooter() {
                       href={href}
                       className="capitalize text-ink/85 hover:text-accent"
                       target="_blank"
-                      rel="noreferrer"
+                      rel="noopener noreferrer"
                     >
                       {name}
                     </a>

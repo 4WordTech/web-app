@@ -1,0 +1,27 @@
+# 4wordtech
+
+> 4wordtech is a startup IT services studio helping clients with websites, web and mobile apps, cloud, AI, integrations, and ongoing support.
+
+## Site
+
+- Homepage: https://4wordtech.com/
+- Services: https://4wordtech.com/services
+- Work / examples: https://4wordtech.com/work
+- Process: https://4wordtech.com/process
+- Pricing: https://4wordtech.com/pricing
+- About: https://4wordtech.com/about
+- Contact: https://4wordtech.com/contact
+- FAQ: https://4wordtech.com/faq
+- Insights (blog): https://4wordtech.com/blog
+- Careers: https://4wordtech.com/careers
+- Privacy: https://4wordtech.com/privacy
+- Terms: https://4wordtech.com/terms
+
+## What we do
+
+Product development, backend & infrastructure, data & analytics, AI & automation, design & UX, integrations (payments, CRM, WhatsApp), and maintenance & support.
+
+## Contact
+
+- Email: hello@4wordtech.com
+- Location: India · Remote-first

@@ -2,12 +2,17 @@
 
 import { useState } from "react";
 import { Button } from "@/components/ui";
+import { site } from "@/lib/content";
+
+type Status = "idle" | "sending" | "sent" | "error" | "not_configured";
 
 export function ContactForm() {
-  const [status, setStatus] = useState<"idle" | "sending" | "sent" | "error">("idle");
+  const [status, setStatus] = useState<Status>("idle");
 
   async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
+    if (status === "sending") return;
+
     const form = e.currentTarget;
     const data = Object.fromEntries(new FormData(form).entries());
     setStatus("sending");
@@ -17,7 +22,16 @@ export function ContactForm() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data),
       });
-      if (!res.ok) throw new Error("failed");
+      const payload = (await res.json().catch(() => null)) as {
+        ok?: boolean;
+        error?: string;
+      } | null;
+
+      if (res.status === 501 || payload?.error === "not_configured") {
+        setStatus("not_configured");
+        return;
+      }
+      if (!res.ok || !payload?.ok) throw new Error("failed");
       form.reset();
       setStatus("sent");
     } catch {
@@ -43,16 +57,29 @@ export function ContactForm() {
           className="w-full rounded-2xl border border-line bg-bg px-4 py-3 text-sm outline-none ring-accent/40 placeholder:text-muted focus:ring-2"
         />
       </div>
-      <Button type="submit" className="w-full sm:w-auto">
+      <Button type="submit" className="w-full sm:w-auto" disabled={status === "sending"}>
         {status === "sending" ? "Sending…" : "Send message"}
       </Button>
       {status === "sent" ? (
-        <p className="text-sm text-accent">
-          Received locally. Wire `/api/contact` to email or a CRM when you’re ready.
+        <p className="text-sm text-accent">Sent. We’ll get back to you soon.</p>
+      ) : null}
+      {status === "not_configured" ? (
+        <p className="text-sm text-muted">
+          Form isn’t live yet — email{" "}
+          <a href={`mailto:${site.email}`} className="text-accent hover:underline">
+            {site.email}
+          </a>{" "}
+          instead.
         </p>
       ) : null}
       {status === "error" ? (
-        <p className="text-sm text-red-400">Something went wrong. Try email instead.</p>
+        <p className="text-sm text-red-400">
+          Something went wrong. Try{" "}
+          <a href={`mailto:${site.email}`} className="underline">
+            email
+          </a>{" "}
+          instead.
+        </p>
       ) : null}
     </form>
   );

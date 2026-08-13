@@ -8,11 +8,20 @@ export default function NotFound() {
         This page didn’t ship.
       </h1>
       <p className="mt-4 max-w-md text-muted">
-        The URL is a dead end. The rest of the site still works.
+        The URL is a dead end. Try one of these instead — or head home and start over.
       </p>
-      <Button href="/" className="mt-8">
-        Back home
-      </Button>
+      <div className="mt-8 flex flex-wrap gap-3">
+        <Button href="/">Back home</Button>
+        <Button href="/services" variant="secondary">
+          Services
+        </Button>
+        <Button href="/work" variant="secondary">
+          Work
+        </Button>
+        <Button href="/contact" variant="secondary">
+          Contact
+        </Button>
+      </div>
     </section>
   );
 }

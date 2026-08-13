@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { CtaBanner } from "@/components/CtaBanner";
 import { Button, PlaceholderBadge, Reveal } from "@/components/ui";
 import { projects } from "@/lib/content";
+import { pageMetadata } from "@/lib/seo";
 
 type Props = { params: Promise<{ slug: string }> };
 
@@ -15,7 +16,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   const project = projects.find((p) => p.slug === slug);
   if (!project) return {};
-  return { title: project.name, description: project.problem };
+  return pageMetadata({
+    title: project.name,
+    description: project.problem,
+    path: `/work/${project.slug}`,
+  });
 }
 
 export default async function ProjectPage({ params }: Props) {

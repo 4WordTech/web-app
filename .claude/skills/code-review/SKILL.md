@@ -3,22 +3,22 @@ name: code-review
 description: >-
   Full-codebase code review: find bugs by severity (CRITICAL/HIGH/MEDIUM/LOW),
   validate file structure (components, lib, app, etc.), remove dead and duplicated
-  code, propose reusable extractions, and recommend high-impact SEO fixes. Use when
-  the user asks for a code review, full codebase review, bug hunt, structure audit,
-  dead-code cleanup, refactor into reusable chunks, or SEO optimization review.
-  Also trigger on /code-review.
+  code, and propose reusable extractions. Use when the user asks for a code review,
+  full codebase review, bug hunt, structure audit, dead-code cleanup, or refactor
+  into reusable chunks. Also trigger on /code-review. Do not cover SEO (separate skill).
 ---
 
 # Code Review
 
 Perform a **full codebase** review (not only a diff). Produce actionable findings with severity, evidence, and concrete fixes. Prefer fixing only when the user asks; by default **report first**.
 
+**Out of scope:** SEO, metadata, sitemap/robots, and ranking/CTR optimizations — handled by a separate skill.
+
 ## When invoked
 
 1. Map the project (framework, package manager, `src/` layout, config).
 2. Run the review passes below in order.
 3. Emit the report using [report-template.md](report-template.md).
-4. Rank SEO suggestions by expected impact vs effort.
 
 Do **not** invent bugs. Every finding needs a file path and a short evidence note (symptom, bad pattern, or missing piece).
 
@@ -28,8 +28,8 @@ Do **not** invent bugs. Every finding needs a file path and a short evidence not
 |-------|----------|
 | **CRITICAL** | Security holes, data loss, auth bypass, secrets exposure, broken production paths, severe a11y/legal blockers |
 | **HIGH** | Likely user-facing bugs, broken flows, major perf regressions, incorrect business logic, missing error handling on critical paths |
-| **MEDIUM** | Edge-case bugs, maintainability debt that will cause bugs, weak structure, duplicated logic, incomplete SEO on key pages |
-| **LOW** | Style nits, minor naming, small a11y polish, micro-optimizations, optional SEO niceties |
+| **MEDIUM** | Edge-case bugs, maintainability debt that will cause bugs, weak structure, duplicated logic |
+| **LOW** | Style nits, minor naming, small a11y polish, micro-optimizations |
 
 If unsure between two levels, pick the **higher** one and note uncertainty.
 
@@ -94,45 +94,17 @@ Where duplication or oversized modules appear:
 
 Only suggest splits that remove real duplication or clarify boundaries.
 
-## Pass 5 — SEO (highest impact first)
-
-Prioritize changes that move ranking/CTR/indexing. Check (framework-aware, e.g. Next.js App Router):
-
-**Critical / High impact**
-
-- Missing or weak unique `title` / `description` per indexable route
-- Missing or incorrect canonical URLs
-- Indexing mistakes: `noindex` on public pages, blocked resources, bad `robots.ts` / `robots.txt`
-- Broken or incomplete `sitemap.ts` / sitemap coverage
-- Missing or wrong Open Graph / Twitter meta on key landing URLs
-- Non-semantic headings / multiple `h1` / thin content on money pages
-- Client-only rendering of primary content that should be server-rendered or static
-
-**Medium**
-
-- Image `alt`, dimensions, priority/LCP on hero
-- Internal linking gaps between key pages
-- JSON-LD for Organization / WebSite / Article / FAQ where content exists
-- `lang` on `<html>`, locale/hreflang if multi-locale
-- Redirect / trailing-slash consistency
-
-**Lower**
-
-- Meta keyword spam (do not recommend keywords stuffing)
-- Minor copy tweaks without structural SEO value
-
-For each SEO item: impact (CRITICAL–LOW), page/file, current gap, concrete change.
-
 Use [checklists.md](checklists.md) while scanning.
 
 ## Output rules
 
 1. Use the structure in [report-template.md](report-template.md).
 2. Group bugs by severity: CRITICAL → HIGH → MEDIUM → LOW.
-3. Separate sections: Bugs, Structure, Dead/Duplication, Reuse plan, SEO.
+3. Separate sections: Bugs, Structure, Dead/Duplication, Reuse plan.
 4. End with a **Top 10 actions** ordered by severity × effort (quick wins first within same severity).
-5. If the codebase is large, still cover all passes; sample exhaustively for security/SEO routes and summarize lower-risk areas rather than skipping passes.
+5. If the codebase is large, still cover all passes; sample exhaustively for security-critical paths and summarize lower-risk areas rather than skipping passes.
 6. Match existing project conventions when suggesting paths/names.
+7. Do **not** include an SEO section or SEO recommendations.
 
 ## Claude Code & Cursor
 

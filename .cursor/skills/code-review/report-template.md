@@ -13,7 +13,6 @@ Copy this structure into the final response.
 - CRITICAL: N | HIGH: N | MEDIUM: N | LOW: N
 - Structure health: [Good / Needs work / Poor] — one sentence
 - Dead/duplication: one sentence
-- SEO readiness: one sentence
 
 ## Top 10 actions
 1. [SEVERITY] Short action — path
@@ -66,25 +65,8 @@ Copy this structure into the final response.
 
 ---
 
-## SEO recommendations
-Ordered by impact.
-
-### CRITICAL / HIGH
-#### S1. Title
-- **Page/file:** …
-- **Gap:** …
-- **Change:** …
-- **Why it matters:** …
-
-### MEDIUM
-#### S2. …
-
-### LOW
-#### S3. …
-
----
-
 ## Out of scope / assumptions
+- SEO is covered by a separate skill; do not include SEO findings here.
 - …
 ```
 

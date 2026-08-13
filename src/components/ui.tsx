@@ -89,7 +89,12 @@ type ButtonProps = {
   type?: "button" | "submit";
   onClick?: () => void;
   external?: boolean;
+  disabled?: boolean;
 };
+
+function isExternalHref(href: string) {
+  return /^(https?:|mailto:|tel:)/i.test(href);
+}
 
 export function Button({
   href,
@@ -99,6 +104,7 @@ export function Button({
   type = "button",
   onClick,
   external,
+  disabled,
 }: ButtonProps) {
   const styles = {
     primary:
@@ -111,13 +117,22 @@ export function Button({
   const cls = cx(
     "group inline-flex items-center justify-center gap-2 rounded-full px-6 py-3 text-sm font-medium tracking-tight transition-colors duration-300",
     styles,
+    disabled && "pointer-events-none opacity-60",
     className,
   );
 
   if (href) {
-    if (external) {
+    const asExternal = external || isExternalHref(href);
+    if (asExternal) {
+      const isWeb = /^https?:/i.test(href);
       return (
-        <a href={href} className={cls} target="_blank" rel="noreferrer" onClick={onClick}>
+        <a
+          href={href}
+          className={cls}
+          target={isWeb ? "_blank" : undefined}
+          rel="noopener noreferrer"
+          onClick={onClick}
+        >
           {children}
         </a>
       );
@@ -130,7 +145,7 @@ export function Button({
   }
 
   return (
-    <button type={type} onClick={onClick} className={cls}>
+    <button type={type} onClick={onClick} className={cls} disabled={disabled}>
       {children}
     </button>
   );

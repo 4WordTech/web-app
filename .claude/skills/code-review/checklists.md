@@ -2,6 +2,8 @@
 
 Use these while running passes. Not every item applies to every repo.
 
+SEO is out of scope for this skill.
+
 ## Bugs
 
 - [ ] Auth/session checks on protected routes and API handlers
@@ -40,16 +42,3 @@ Use these while running passes. Not every item applies to every repo.
 - [ ] Proposed file path and public API named
 - [ ] No new abstraction layers without callers
 - [ ] Shared UI goes under `components/`; pure logic under `lib/`
-
-## SEO
-
-- [ ] Unique title + description per public route
-- [ ] Canonical strategy consistent
-- [ ] `robots` allows public pages; disallows private/preview if needed
-- [ ] Sitemap includes all indexable URLs; excludes noindex
-- [ ] OG/Twitter images and titles on primary pages
-- [ ] Single clear `h1` per page; heading hierarchy sane
-- [ ] Primary content available without client JS when possible
-- [ ] Images: alt text; LCP image prioritized
-- [ ] Structured data where it matches visible content
-- [ ] `metadataBase` / absolute URLs correct for production domain

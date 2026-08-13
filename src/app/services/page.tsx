@@ -2,12 +2,14 @@ import type { Metadata } from "next";
 import { CtaBanner } from "@/components/CtaBanner";
 import { Button, PlaceholderBadge, Reveal } from "@/components/ui";
 import { services } from "@/lib/content";
+import { pageMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
   title: "Services",
   description:
     "IT services for clients: product development, backend, AI, design, data, integrations, and support.",
-};
+  path: "/services",
+});
 
 export default function ServicesPage() {
   return (

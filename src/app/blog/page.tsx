@@ -2,12 +2,14 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { Arrow, PlaceholderBadge, Reveal } from "@/components/ui";
 import { posts } from "@/lib/content";
+import { pageMetadata } from "@/lib/seo";
 import { formatDate } from "@/lib/utils";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
   title: "Insights",
   description: "Notes on IT services, delivery, and shipping software for clients.",
-};
+  path: "/blog",
+});
 
 export default function BlogPage() {
   return (

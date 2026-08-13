@@ -30,7 +30,7 @@ export function CustomCursor() {
       setPos({ x: e.clientX, y: e.clientY });
     };
     const over = (e: MouseEvent) => {
-      const el = e.target as HTMLElement | null;
+      const el = e.target instanceof Element ? e.target : null;
       setHover(!!el?.closest("a, button, input, textarea, [data-cursor]"));
     };
 

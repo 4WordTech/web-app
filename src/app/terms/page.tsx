@@ -1,10 +1,13 @@
 import type { Metadata } from "next";
 import { PlaceholderBadge, Reveal } from "@/components/ui";
 import { site } from "@/lib/content";
+import { pageMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
   title: "Terms of use",
-};
+  description: `Terms for using the ${site.name} website and engaging our IT services.`,
+  path: "/terms",
+});
 
 export default function TermsPage() {
   return (

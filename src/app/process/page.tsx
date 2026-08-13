@@ -2,11 +2,13 @@ import type { Metadata } from "next";
 import { CtaBanner } from "@/components/CtaBanner";
 import { PlaceholderBadge, Reveal } from "@/components/ui";
 import { communicationStyle, processSteps } from "@/lib/content";
+import { pageMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
   title: "Process",
   description: "How 4wordtech works: discovery, build, launch, support.",
-};
+  path: "/process",
+});
 
 export default function ProcessPage() {
   return (

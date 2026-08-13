@@ -1,10 +1,13 @@
 import type { Metadata } from "next";
 import { PlaceholderBadge, Reveal } from "@/components/ui";
 import { site } from "@/lib/content";
+import { pageMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
   title: "Privacy policy",
-};
+  description: `How ${site.name} collects and uses contact information on this website.`,
+  path: "/privacy",
+});
 
 export default function PrivacyPage() {
   return (

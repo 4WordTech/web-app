@@ -3,11 +3,13 @@ import Link from "next/link";
 import { CtaBanner } from "@/components/CtaBanner";
 import { Arrow, PlaceholderBadge, Reveal } from "@/components/ui";
 import { projects } from "@/lib/content";
+import { pageMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
   title: "Work",
   description: "Example IT projects 4wordtech can take on for clients.",
-};
+  path: "/work",
+});
 
 export default function WorkPage() {
   return (

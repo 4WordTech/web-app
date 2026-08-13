@@ -1,7 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { motion } from "motion/react";
+import { useState } from "react";
+import { motion, useReducedMotion } from "motion/react";
 import {
   Arrow,
   Button,
@@ -23,24 +24,10 @@ import {
 } from "@/lib/content";
 
 export function TechMarquee() {
-  return (
-    <Marquee
-      items={[
-        "Product development",
-        "Backend",
-        "AI & automation",
-        "Design & UX",
-        "Data",
-        "Integrations",
-        "Support",
-      ]}
-    />
-  );
+  return <Marquee items={services.map((s) => s.title)} />;
 }
 
 export function ServicesPreview() {
-  const preview = services.slice(0, 6);
-
   return (
     <section id="services" className="mx-auto max-w-[1400px] px-5 py-20 md:px-8 md:py-28">
       <Reveal>
@@ -52,7 +39,7 @@ export function ServicesPreview() {
               <em className="font-serif font-normal italic text-muted">brochure voice.</em>
             </>
           }
-          body="Six IT services we offer clients — from first build to ongoing support."
+          body="Seven IT services we offer clients — from first build to ongoing support."
           action={
             <Button href="/services" variant="secondary">
               View all services <Arrow />
@@ -62,7 +49,7 @@ export function ServicesPreview() {
       </Reveal>
 
       <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
-        {preview.map((s, i) => (
+        {services.map((s, i) => (
           <Reveal key={s.slug} delay={i * 0.06}>
             <Link
               href={`/services#${s.slug}`}
@@ -347,7 +334,7 @@ export function Newsletter() {
                 Occasional notes on IT services and shipping software. No spam.
               </h2>
               <p className="mt-3 text-sm text-muted">
-                Wire this form to your email tool later. It only stores locally for now.
+                Newsletter signup isn’t connected yet — replace this when your email tool is ready.
               </p>
             </div>
             <NewsletterForm />
@@ -359,41 +346,56 @@ export function Newsletter() {
 }
 
 function NewsletterForm() {
+  const [note, setNote] = useState<string | null>(null);
+
   return (
     <form
-      className="flex flex-col gap-3 sm:flex-row md:col-span-6"
+      className="flex flex-col gap-3 sm:flex-row md:col-span-6 md:flex-wrap"
       onSubmit={(e) => {
         e.preventDefault();
-        const form = e.currentTarget;
-        const email = new FormData(form).get("email");
-        window.localStorage.setItem("4wordtech-newsletter", String(email));
-        form.reset();
-        alert("Saved locally — connect an email provider when you’re ready.");
+        setNote(
+          "Newsletter isn’t live yet — check Insights or contact us.",
+        );
       }}
     >
       <input
         name="email"
         type="email"
         required
+        aria-label="Email"
         placeholder="you@company.com"
         className="h-12 flex-1 rounded-full border border-line bg-bg px-5 text-sm outline-none ring-accent/40 placeholder:text-muted focus:ring-2"
       />
       <Button type="submit">Subscribe</Button>
+      {note ? (
+        <p className="w-full text-sm text-muted" role="status">
+          {note}{" "}
+          <Link href="/blog" className="text-accent hover:underline">
+            Insights
+          </Link>
+          {" · "}
+          <Link href="/contact" className="text-accent hover:underline">
+            Contact
+          </Link>
+        </p>
+      ) : null}
     </form>
   );
 }
 
 export function FloatingOrbs() {
+  const reduce = useReducedMotion();
+
   return (
     <div aria-hidden className="pointer-events-none fixed inset-0 -z-10 overflow-hidden">
       <motion.div
         className="absolute -left-24 top-1/3 h-72 w-72 rounded-full bg-accent/10 blur-[90px]"
-        animate={{ y: [0, 40, 0], x: [0, 20, 0] }}
+        animate={reduce ? undefined : { y: [0, 40, 0], x: [0, 20, 0] }}
         transition={{ duration: 16, repeat: Infinity, ease: "easeInOut" }}
       />
       <motion.div
         className="absolute right-0 top-[60%] h-80 w-80 rounded-full bg-[#E4C9A5]/10 blur-[100px]"
-        animate={{ y: [0, -30, 0] }}
+        animate={reduce ? undefined : { y: [0, -30, 0] }}
         transition={{ duration: 18, repeat: Infinity, ease: "easeInOut" }}
       />
     </div>
